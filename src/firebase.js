@@ -1,18 +1,14 @@
-// ─────────────────────────────────────────────────────────────
-//  🔥 FIREBASE — Colle ici ta configuration Firebase
-//  (tu la trouveras à l'étape 2 du guide)
-// ─────────────────────────────────────────────────────────────
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey:            "AIzaSyB3xK7mPqRt2...",
-  authDomain:        "le-marche.firebaseapp.com",
-  databaseURL:       "https://le-marche-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId:         "le-marche",
-  storageBucket:     "le-marche.appspot.com",
-  messagingSenderId: "123456789012",
-  appId:             "1:123456:web:abc123..."
+  apiKey: "AIzaSyA99en40UOSz1ZGiIddEcXOUmh4FCre29w",
+  authDomain: "liste-de-courses-95459.firebaseapp.com",
+  databaseURL: "https://liste-de-courses-95459-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "liste-de-courses-95459",
+  storageBucket: "liste-de-courses-95459.firebasestorage.app",
+  messagingSenderId: "850115175726",
+  appId: "1:850115175726:web:44dc21b7cac1b5ebe046bf",
 };
 
 const app = initializeApp(firebaseConfig);
