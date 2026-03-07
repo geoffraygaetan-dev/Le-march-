@@ -6,13 +6,13 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey:            "COLLE_TON_API_KEY_ICI",
-  authDomain:        "COLLE_TON_AUTH_DOMAIN_ICI",
-  databaseURL:       "COLLE_TON_DATABASE_URL_ICI",
-  projectId:         "COLLE_TON_PROJECT_ID_ICI",
-  storageBucket:     "COLLE_TON_STORAGE_BUCKET_ICI",
-  messagingSenderId: "COLLE_TON_MESSAGING_SENDER_ID_ICI",
-  appId:             "COLLE_TON_APP_ID_ICI",
+  apiKey:            "AIzaSyB3xK7mPqRt2...",
+  authDomain:        "le-marche.firebaseapp.com",
+  databaseURL:       "https://le-marche-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:         "le-marche",
+  storageBucket:     "le-marche.appspot.com",
+  messagingSenderId: "123456789012",
+  appId:             "1:123456:web:abc123..."
 };
 
 const app = initializeApp(firebaseConfig);
