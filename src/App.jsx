@@ -221,7 +221,8 @@ export default function App() {
   const currentPresets = PRESETS[itemCat] || [];
   const filteredPresets = search.trim()
     ? Object.values(PRESETS).flat().filter(p => p.n.toLowerCase().includes(search.toLowerCase()))
-    : currentPresets;
+    : [];
+  const showSuggestions = search.trim().length > 0;
 
   return (
     <div style={{minHeight:"100vh",background:"#fdf6ec",fontFamily:"Lato,sans-serif",backgroundImage:"radial-gradient(circle at 15% 15%,#f9e8d0 0%,transparent 55%),radial-gradient(circle at 85% 85%,#e8f0e0 0%,transparent 55%)"}}>
@@ -291,28 +292,44 @@ export default function App() {
                 ))}
               </div>
             </div>
-            {/* Presets */}
+            {/* Presets — search first */}
             <div style={{padding:".75rem 1.2rem .6rem",borderBottom:"1px solid #f5ede3"}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:".42rem"}}>
-                <div style={{fontSize:".57rem",letterSpacing:"2px",textTransform:"uppercase",color:"#b8a090"}}>{search?`Résultats pour "${search}"`:`Articles rapides — ${itemCat}`}</div>
-                <button className="ghost" onClick={() => setShowPresets(p => !p)} style={{fontSize:".65rem",color:"#b8a090",border:"1px solid #e5d5c0",borderRadius:8,padding:".12rem .45rem"}}>{showPresets?"Masquer":"Afficher"}</button>
-              </div>
-              <div style={{display:"flex",alignItems:"center",gap:".5rem",background:"#f8f2ea",borderRadius:10,padding:".38rem .75rem",marginBottom:showPresets?".5rem":"0"}}>
+              <div style={{display:"flex",alignItems:"center",gap:".5rem",background:"#f8f2ea",borderRadius:10,padding:".38rem .75rem",marginBottom:showSuggestions?".5rem":"0"}}>
                 <span style={{color:"#b8a090",fontSize:".9rem"}}><ISearch/></span>
-                <input className="inp" placeholder="Rechercher un article…" value={search} onChange={e => setSearch(e.target.value)} style={{flex:1,fontSize:".85rem",background:"transparent"}}/>
+                <input className="inp" placeholder={`Tapez pour chercher dans ${itemCat}…`} value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === "Enter") {
+                      if (filteredPresets.length > 0) addItem(filteredPresets[0].n);
+                      else if (search.trim()) addItem(search.trim());
+                    }
+                  }}
+                  style={{flex:1,fontSize:".85rem",background:"transparent"}}/>
                 {search && <button className="ghost" onClick={() => setSearch("")} style={{color:"#b8a090",fontSize:".85rem"}}><IX/></button>}
               </div>
-              {showPresets && (
-                <div style={{display:"flex",flexWrap:"wrap",gap:".3rem",maxHeight:160,overflowY:"auto"}}>
+              {!showSuggestions && (
+                <div style={{fontSize:".7rem",color:"#c4ad97",marginTop:".35rem",textAlign:"center"}}>
+                  ✏️ Tapez un article ou utilisez le champ nom ci-dessous
+                </div>
+              )}
+              {showSuggestions && (
+                <div style={{display:"flex",flexWrap:"wrap",gap:".3rem",maxHeight:180,overflowY:"auto"}}>
                   {filteredPresets.map(p => (
                     <button key={p.n} className="preset-btn" onClick={() => addItem(p.n)} onContextMenu={e => { e.preventDefault(); pickPreset(p.n); }} style={{background:"#f5ede3",borderRadius:20,padding:".22rem .62rem",fontSize:".78rem",color:"#5a4030",display:"flex",alignItems:"center",gap:".25rem"}}>
                       <span>{p.e}</span><span>{p.n}</span>
                     </button>
                   ))}
-                  {filteredPresets.length===0 && <div style={{fontSize:".78rem",color:"#c4ad97",padding:".2rem"}}>Aucun résultat</div>}
+                  {filteredPresets.length===0 && (
+                    <div style={{width:"100%",padding:".4rem .2rem"}}>
+                      <div style={{fontSize:".78rem",color:"#c4ad97",marginBottom:".4rem"}}>Aucun article trouvé — appuie sur Entrée pour ajouter</div>
+                      <button className="preset-btn" onClick={() => addItem(search.trim())} style={{background:"#3d2b1f",borderRadius:20,padding:".22rem .72rem",fontSize:".78rem",color:"white",display:"flex",alignItems:"center",gap:".3rem"}}>
+                        <span>➕</span><span>Ajouter "{search.trim()}"</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
-              {showPresets && <div style={{fontSize:".62rem",color:"#c4ad97",marginTop:".35rem"}}>Clic = ajouter directement · Clic droit = éditer avant d'ajouter</div>}
+              {showSuggestions && filteredPresets.length > 0 && <div style={{fontSize:".62rem",color:"#c4ad97",marginTop:".35rem"}}>Clic = ajouter · Entrée = ajouter le premier · Clic droit = éditer</div>}
             </div>
             {/* Store checkboxes */}
             <div style={{padding:".7rem 1.2rem .55rem",borderBottom:"1px solid #f5ede3"}}>
