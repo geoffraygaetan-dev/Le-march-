@@ -322,12 +322,18 @@ export default function App() {
                   <div style={{height:2,background:"#ede0ce",borderRadius:2,marginBottom:".65rem"}}>
                     <div style={{height:"100%",background:store.color,borderRadius:2,width:`${its.length?done/its.length*100:0}%`,transition:"width .5s"}}/>
                   </div>
-                  {CATS.filter(c => its.some(i => i.cat===c)).map(c => (
-                    <div key={c} style={{marginBottom:".65rem"}}>
-                      <div style={{fontSize:".58rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".36rem",paddingLeft:".2rem"}}>{c}</div>
-                      {[...its.filter(i => i.cat===c)].sort((a,b) => { const ad=!!((a.done||{})[store.id]), bd=!!((b.done||{})[store.id]); return ad===bd?0:ad?1:-1; }).map(item => <ItemRow key={item.id} item={item} storeId={store.id} storeColor={store.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
+                  {CATS.filter(c => its.some(i => i.cat===c && !((i.done||{})[store.id]))).map(c => (
+                    <div key={c} style={{marginBottom:".5rem"}}>
+                      <div style={{fontSize:".58rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".28rem",paddingLeft:".2rem"}}>{c}</div>
+                      {its.filter(i => i.cat===c && !((i.done||{})[store.id])).map(item => <ItemRow key={item.id} item={item} storeId={store.id} storeColor={store.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
                     </div>
                   ))}
+                  {its.some(i => (i.done||{})[store.id]) && (
+                    <div style={{marginTop:".6rem",paddingTop:".6rem",borderTop:"1px dashed #e0d0c0"}}>
+                      <div style={{fontSize:".58rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".28rem",paddingLeft:".2rem"}}>🛒 Dans le chariot</div>
+                      {its.filter(i => (i.done||{})[store.id]).map(item => <ItemRow key={item.id} item={item} storeId={store.id} storeColor={store.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -355,12 +361,18 @@ export default function App() {
                 </div>
               </div>
               {its.length>0&&<div style={{height:3,background:"#ede0ce",borderRadius:2,marginBottom:"1.1rem"}}><div style={{height:"100%",background:activeStore.color,borderRadius:2,width:`${done/its.length*100}%`,transition:"width .5s"}}/></div>}
-              {CATS.filter(c => its.some(i => i.cat===c)).map(c => (
-                <div key={c} style={{marginBottom:".75rem"}}>
-                  <div style={{fontSize:".58rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".4rem",paddingLeft:".2rem"}}>{c}</div>
-                  {[...its.filter(i => i.cat===c)].sort((a,b) => { const ad=!!((a.done||{})[activeStore.id]), bd=!!((b.done||{})[activeStore.id]); return ad===bd?0:ad?1:-1; }).map(item => <ItemRow key={item.id} item={item} storeId={activeStore.id} storeColor={activeStore.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
+              {CATS.filter(c => its.some(i => i.cat===c && !((i.done||{})[activeStore.id]))).map(c => (
+                <div key={c} style={{marginBottom:".5rem"}}>
+                  <div style={{fontSize:".58rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".28rem",paddingLeft:".2rem"}}>{c}</div>
+                  {its.filter(i => i.cat===c && !((i.done||{})[activeStore.id])).map(item => <ItemRow key={item.id} item={item} storeId={activeStore.id} storeColor={activeStore.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
                 </div>
               ))}
+              {its.some(i => (i.done||{})[activeStore.id]) && (
+                <div style={{marginTop:".7rem",paddingTop:".7rem",borderTop:"1px dashed #e0d0c0"}}>
+                  <div style={{fontSize:".58rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".28rem",paddingLeft:".2rem"}}>🛒 Dans le chariot</div>
+                  {its.filter(i => (i.done||{})[activeStore.id]).map(item => <ItemRow key={item.id} item={item} storeId={activeStore.id} storeColor={activeStore.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
+                </div>
+              )}
               {!its.length&&<div style={{textAlign:"center",padding:"3rem",color:"#c4ad97",fontStyle:"italic",fontWeight:300}}>Aucun article pour {activeStore.name}…</div>}
             </div>
           );
