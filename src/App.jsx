@@ -226,7 +226,7 @@ export default function App() {
                   {suggestions.map((p, i) => (
                     <div key={p.n} className={`sug${i===dropIdx?" act":""}`}
                       onMouseDown={e => { e.preventDefault(); selectSuggestion(p); }}
-                      style={{display:"flex",alignItems:"center",gap:".75rem",padding:".62rem 1rem"}}>
+                      style={{display:"flex",alignItems:"center",gap:".75rem",padding:".48rem .9rem"}}>
                       <span style={{fontSize:"1.2rem",flexShrink:0}}>{p.e}</span>
                       <div style={{flex:1}}>
                         <div style={{fontSize:".92rem",color:"#3d2b1f",fontWeight:500}}>{p.n}</div>
@@ -319,13 +319,13 @@ export default function App() {
                     </div>
                     <button onClick={() => setTab(store.id)} className="ghost" style={{fontSize:".68rem",color:"#b8a090",border:"1px solid #e5d5c0",borderRadius:10,padding:".2rem .55rem"}}>Voir →</button>
                   </div>
-                  <div style={{height:2,background:"#ede0ce",borderRadius:2,marginBottom:".85rem"}}>
+                  <div style={{height:2,background:"#ede0ce",borderRadius:2,marginBottom:".65rem"}}>
                     <div style={{height:"100%",background:store.color,borderRadius:2,width:`${its.length?done/its.length*100:0}%`,transition:"width .5s"}}/>
                   </div>
                   {CATS.filter(c => its.some(i => i.cat===c)).map(c => (
-                    <div key={c} style={{marginBottom:".85rem"}}>
+                    <div key={c} style={{marginBottom:".65rem"}}>
                       <div style={{fontSize:".58rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".36rem",paddingLeft:".2rem"}}>{c}</div>
-                      {its.filter(i => i.cat===c).map(item => <ItemRow key={item.id} item={item} storeId={store.id} storeColor={store.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
+                      {[...its.filter(i => i.cat===c)].sort((a,b) => { const ad=!!((a.done||{})[store.id]), bd=!!((b.done||{})[store.id]); return ad===bd?0:ad?1:-1; }).map(item => <ItemRow key={item.id} item={item} storeId={store.id} storeColor={store.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
                     </div>
                   ))}
                 </div>
@@ -356,9 +356,9 @@ export default function App() {
               </div>
               {its.length>0&&<div style={{height:3,background:"#ede0ce",borderRadius:2,marginBottom:"1.1rem"}}><div style={{height:"100%",background:activeStore.color,borderRadius:2,width:`${done/its.length*100}%`,transition:"width .5s"}}/></div>}
               {CATS.filter(c => its.some(i => i.cat===c)).map(c => (
-                <div key={c} style={{marginBottom:"1.05rem"}}>
+                <div key={c} style={{marginBottom:".75rem"}}>
                   <div style={{fontSize:".58rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".4rem",paddingLeft:".2rem"}}>{c}</div>
-                  {its.filter(i => i.cat===c).map(item => <ItemRow key={item.id} item={item} storeId={activeStore.id} storeColor={activeStore.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
+                  {[...its.filter(i => i.cat===c)].sort((a,b) => { const ad=!!((a.done||{})[activeStore.id]), bd=!!((b.done||{})[activeStore.id]); return ad===bd?0:ad?1:-1; }).map(item => <ItemRow key={item.id} item={item} storeId={activeStore.id} storeColor={activeStore.color} onToggle={toggleDone} onDelete={deleteItem}/>)}
                 </div>
               ))}
               {!its.length&&<div style={{textAlign:"center",padding:"3rem",color:"#c4ad97",fontStyle:"italic",fontWeight:300}}>Aucun article pour {activeStore.name}…</div>}
@@ -369,7 +369,7 @@ export default function App() {
         {/* NOTES */}
         {tab==="notes" && (
           <div className="up">
-            <div style={{display:"flex",alignItems:"center",gap:".55rem",marginBottom:"1.05rem"}}>
+            <div style={{display:"flex",alignItems:"center",gap:".55rem",marginBottom:".75rem"}}>
               <span style={{fontSize:"1.2rem"}}>📝</span>
               <div>
                 <div style={{fontFamily:"'Playfair Display',serif",fontSize:"1.1rem",fontWeight:600,color:"#3d2b1f"}}>Bloc-notes</div>
@@ -409,7 +409,7 @@ export default function App() {
 function ItemRow({ item, storeId, storeColor, onToggle, onDelete }) {
   const done = !!(item.done||{})[storeId];
   return (
-    <div className="row" style={{display:"flex",alignItems:"center",gap:".65rem",background:done?"transparent":"white",borderRadius:13,padding:".62rem 1rem",marginBottom:".3rem",boxShadow:done?"none":"0 2px 10px rgba(90,60,30,.06)",border:done?"none":"1px solid #ede0ce",opacity:done?.45:1,transition:"all .2s"}}>
+    <div className="row" style={{display:"flex",alignItems:"center",gap:".65rem",background:done?"transparent":"white",borderRadius:13,padding:".48rem .9rem",marginBottom:".16rem",boxShadow:done?"none":"0 1px 6px rgba(90,60,30,.06)",border:done?"none":"1px solid #ede0ce",opacity:done?.45:1,transition:"all .2s"}}>
       <div className="chk" onClick={() => onToggle(item.id, storeId)} style={{width:22,height:22,borderRadius:6,flexShrink:0,border:done?"none":`2px solid ${storeColor}88`,background:done?storeColor:"transparent",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:".7rem",transition:".18s"}}>{done&&<ICheck/>}</div>
       {item.emoji && item.emoji !== "🛍️" && <span style={{fontSize:"1.15rem",flexShrink:0,filter:done?"grayscale(1)":"none",transition:".2s"}}>{item.emoji}</span>}
       <span style={{flex:1,color:"#3d2b1f",fontWeight:300,textDecoration:done?"line-through":"none",fontStyle:done?"italic":"normal",fontSize:".92rem"}}>{item.text}</span>
@@ -427,7 +427,7 @@ function StoreModal({ title, initial, onSave, onDelete, onClose }) {
   return (
     <div className="overlay" onClick={e => e.target===e.currentTarget&&onClose()}>
       <div className="modal up">
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"1.05rem"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:".75rem"}}>
           <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:"1.12rem",color:"#3d2b1f",margin:0}}>{title}</h2>
           <button className="ghost" onClick={onClose} style={{fontSize:"1rem",color:"#b8a090"}}><IX/></button>
         </div>
