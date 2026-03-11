@@ -261,11 +261,49 @@ export default function App() {
               </div>
               {/* Unités */}
               {UNITS.map(u => (
-                <button key={u} className="ubtn" onClick={() => { setItemUnit(u); if (u==="kg"||u==="L") setItemQty(q => q < 0.5 ? 0.5 : q); }}
-                  style={{background:itemUnit===u?"#3d2b1f":"#f5ede3",color:itemUnit===u?"white":"#7a5c40",borderRadius:20,padding:".2rem .55rem",fontSize:".75rem",fontWeight:itemUnit===u?700:400,flex:"none"}}>
+                <button
+                  key={u}
+                  className="ubtn"
+                  onClick={() => {
+                    setItemUnit(u);
+                    if (u === "kg" || u === "L") setItemQty(q => (q < 0.5 ? 0.5 : q));
+                  }}
+                  style={{
+                    background: itemUnit === u ? "#3d2b1f" : "#f5ede3",
+                    color: itemUnit === u ? "white" : "#7a5c40",
+                    borderRadius: 20,
+                    padding: ".2rem .55rem",
+                    fontSize: ".75rem",
+                    fontWeight: itemUnit === u ? 700 : 400,
+                    flex: "none",
+                  }}
+                >
                   {u}
                 </button>
               ))}
+              {/* Grammages rapides pour les kg */}
+              {itemUnit === "kg" && (
+                <div style={{ display: "flex", gap: ".25rem", flexWrap: "wrap" }}>
+                  {[0.1, 0.25, 0.5, 1].map(v => (
+                    <button
+                      key={v}
+                      className="ubtn"
+                      onClick={() => setItemQty(v)}
+                      style={{
+                        background: itemQty === v ? "#3d2b1f" : "#f5ede3",
+                        color: itemQty === v ? "white" : "#7a5c40",
+                        borderRadius: 20,
+                        padding: ".18rem .55rem",
+                        fontSize: ".72rem",
+                        fontWeight: itemQty === v ? 700 : 400,
+                        flex: "none",
+                      }}
+                    >
+                      {v >= 1 ? `${v} kg` : `${v * 1000} g`}
+                    </button>
+                  ))}
+                </div>
+              )}
               <div style={{flex:1}}/>
               {/* Ajouter */}
               <button className="abtn" onClick={openStorePicker} disabled={!search.trim()}
