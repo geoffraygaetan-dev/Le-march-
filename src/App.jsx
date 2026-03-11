@@ -147,8 +147,8 @@ export default function App() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Lato:wght@300;400;700&display=swap');
         *{box-sizing:border-box}
-        .row{transition:.2s}.row:hover{transform:translateX(3px)}.row:hover .del{opacity:1!important}
-        .del{opacity:0;transition:.15s;cursor:pointer}
+        .row{transition:.2s}.row:hover{transform:translateX(2px)}.row:hover .del{opacity:1!important}
+        .del{opacity:.25;transition:.15s;cursor:pointer}
         .tbtn{transition:.15s;cursor:pointer;border:none;font-family:inherit;white-space:nowrap}.tbtn:hover{opacity:.8}
         .ghost{border:none;background:transparent;cursor:pointer;font-family:inherit;transition:.15s}.ghost:hover{opacity:.65}
         .chk{transition:.18s;cursor:pointer}.chk:hover{transform:scale(1.1)}
@@ -202,7 +202,7 @@ export default function App() {
 
         {/* ADD FORM */}
         {tab !== "notes" && (
-          <div className="up" style={{background:"white",borderRadius:22,border:"1px solid #ede0ce",boxShadow:"0 6px 28px rgba(90,60,30,.10)",marginBottom:"1.6rem",overflow:"visible",position:"relative"}}>
+          <div className="up" style={{background:"white",borderRadius:22,border:"1px solid #ede0ce",boxShadow:"0 6px 28px rgba(90,60,30,.10)",marginBottom:"1.6rem",overflow:"visible",position:"relative",zIndex:10}}>
 
             {/* Smart search */}
             <div style={{padding:"1.1rem 1.2rem .9rem",borderBottom:"1px solid #f5ede3",position:"relative"}}>
