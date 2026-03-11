@@ -112,7 +112,8 @@ export default function App() {
     const text = search.trim();
     if (!text) return;
     const qtyLabel = !(itemQty === 1 && itemUnit === "pièce(s)") ? `${itemQty} ${itemUnit}` : "";
-    setStorePicker({ text, emoji: itemEmoji, cat: itemCat, qty: qtyLabel });
+    inputRef.current?.blur();
+    setTimeout(() => setStorePicker({ text, emoji: itemEmoji, cat: itemCat, qty: qtyLabel }), 120);
   };
 
   const confirmAdd = (storeIds) => {
@@ -244,36 +245,31 @@ export default function App() {
               )}
             </div>
 
-            {/* Quantity */}
-            <div style={{padding:".85rem 1.2rem",borderBottom:"1px solid #f5ede3"}}>
-              <div style={{fontSize:".55rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".55rem",fontWeight:700}}>Quantité</div>
-              <div style={{display:"flex",alignItems:"center",gap:"1rem",flexWrap:"wrap"}}>
-                <div style={{display:"flex",alignItems:"center",gap:".5rem",background:"#f8f2ea",borderRadius:12,padding:".35rem .55rem"}}>
-                  <button className="qbtn" onClick={() => setItemQty(q => Math.max(qtyStep, +(q - qtyStep).toFixed(1)))}
-                    style={{width:34,height:34,background:"white",boxShadow:"0 1px 5px rgba(0,0,0,.1)",color:"#3d2b1f",borderRadius:9,fontSize:".95rem"}}>
-                    <IMinus/>
-                  </button>
-                  <span style={{minWidth:36,textAlign:"center",fontWeight:700,fontSize:"1.1rem",color:"#3d2b1f"}}>{itemQty}</span>
-                  <button className="qbtn" onClick={() => setItemQty(q => +(q + qtyStep).toFixed(1))}
-                    style={{width:34,height:34,background:"#3d2b1f",color:"white",boxShadow:"0 2px 8px rgba(61,43,31,.3)",borderRadius:9,fontSize:".95rem"}}>
-                    <IPlus/>
-                  </button>
-                </div>
-                <div style={{display:"flex",gap:".28rem",flexWrap:"wrap"}}>
-                  {UNITS.map(u => (
-                    <button key={u} className="ubtn" onClick={() => { setItemUnit(u); if (u==="kg"||u==="L") setItemQty(q => q < 0.5 ? 0.5 : q); }}
-                      style={{background:itemUnit===u?"#3d2b1f":"#f5ede3",color:itemUnit===u?"white":"#7a5c40",borderRadius:20,padding:".25rem .72rem",fontSize:".8rem",fontWeight:itemUnit===u?700:400}}>
-                      {u}
-                    </button>
-                  ))}
-                </div>
+            {/* Quantity + Add — une seule ligne */}
+            <div style={{padding:".65rem 1.1rem .8rem",display:"flex",alignItems:"center",gap:".45rem",flexWrap:"wrap"}}>
+              {/* − qty + */}
+              <div style={{display:"flex",alignItems:"center",gap:".28rem",background:"#f8f2ea",borderRadius:10,padding:".22rem .38rem",flexShrink:0}}>
+                <button className="qbtn" onClick={() => setItemQty(q => Math.max(qtyStep, +(q - qtyStep).toFixed(1)))}
+                  style={{width:28,height:28,background:"white",boxShadow:"0 1px 4px rgba(0,0,0,.1)",color:"#3d2b1f",borderRadius:7,fontSize:".85rem"}}>
+                  <IMinus/>
+                </button>
+                <span style={{minWidth:26,textAlign:"center",fontWeight:700,fontSize:".95rem",color:"#3d2b1f"}}>{itemQty}</span>
+                <button className="qbtn" onClick={() => setItemQty(q => +(q + qtyStep).toFixed(1))}
+                  style={{width:28,height:28,background:"#3d2b1f",color:"white",boxShadow:"0 2px 6px rgba(61,43,31,.3)",borderRadius:7,fontSize:".85rem"}}>
+                  <IPlus/>
+                </button>
               </div>
-            </div>
-
-            {/* Add button */}
-            <div style={{padding:".75rem 1.2rem 1rem",display:"flex",justifyContent:"flex-end"}}>
+              {/* Unités */}
+              {UNITS.map(u => (
+                <button key={u} className="ubtn" onClick={() => { setItemUnit(u); if (u==="kg"||u==="L") setItemQty(q => q < 0.5 ? 0.5 : q); }}
+                  style={{background:itemUnit===u?"#3d2b1f":"#f5ede3",color:itemUnit===u?"white":"#7a5c40",borderRadius:20,padding:".2rem .55rem",fontSize:".75rem",fontWeight:itemUnit===u?700:400,flex:"none"}}>
+                  {u}
+                </button>
+              ))}
+              <div style={{flex:1}}/>
+              {/* Ajouter */}
               <button className="abtn" onClick={openStorePicker} disabled={!search.trim()}
-                style={{background:search.trim()?"linear-gradient(135deg,#2d8a4e,#1e6b3a)":"#e0d0c0",color:search.trim()?"white":"#b8a090",padding:".68rem 1.6rem",fontSize:".95rem",gap:".45rem",borderRadius:14,boxShadow:search.trim()?"0 4px 14px rgba(45,138,78,.35)":"none",transition:".2s"}}>
+                style={{background:search.trim()?"linear-gradient(135deg,#2d8a4e,#1e6b3a)":"#e0d0c0",color:search.trim()?"white":"#b8a090",padding:".55rem 1.1rem",fontSize:".88rem",gap:".35rem",borderRadius:12,boxShadow:search.trim()?"0 4px 12px rgba(45,138,78,.35)":"none",transition:".2s",flexShrink:0}}>
                 <IPlus/> Ajouter
               </button>
             </div>
