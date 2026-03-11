@@ -26,19 +26,97 @@ const IEye   = () => <Svg d={<><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-1
 const CATS = ["🥦 Légumes","🍎 Fruits","🥩 Viande & Volaille","🐟 Poisson & Fruits de mer","🥐 Boulangerie","🧀 Crémerie & Œufs","🫙 Épicerie salée","🍫 Épicerie sucrée","❄️ Surgelés","🧴 Hygiène & Beauté","🍷 Boissons","🧹 Entretien","💊 Santé","🌿 Autre"];
 const UNITS = ["pièce(s)","kg","L","boîte(s)"];
 const PRESETS = {
-  "🥦 Légumes": [{n:"Poireaux",e:"🧅"},{n:"Carottes",e:"🥕"},{n:"Pommes de terre",e:"🥔"},{n:"Tomates",e:"🍅"},{n:"Courgettes",e:"🥒"},{n:"Brocolis",e:"🥦"},{n:"Épinards",e:"🌿"},{n:"Salade",e:"🥬"},{n:"Oignons",e:"🧅"},{n:"Ail",e:"🧄"},{n:"Champignons",e:"🍄"},{n:"Poivrons",e:"🫑"},{n:"Aubergines",e:"🍆"},{n:"Concombre",e:"🥒"},{n:"Céleri",e:"🌿"},{n:"Fenouil",e:"🌿"},{n:"Haricots verts",e:"🫘"},{n:"Petits pois",e:"🫛"},{n:"Maïs",e:"🌽"},{n:"Asperges",e:"🌿"},{n:"Betterave",e:"🟣"},{n:"Chou-fleur",e:"🥦"},{n:"Chou",e:"🥬"},{n:"Potiron",e:"🎃"},{n:"Patate douce",e:"🍠"},{n:"Endives",e:"🥬"}],
-  "🍎 Fruits": [{n:"Pommes",e:"🍎"},{n:"Bananes",e:"🍌"},{n:"Oranges",e:"🍊"},{n:"Citrons",e:"🍋"},{n:"Fraises",e:"🍓"},{n:"Raisins",e:"🍇"},{n:"Poires",e:"🍐"},{n:"Pêches",e:"🍑"},{n:"Mangues",e:"🥭"},{n:"Ananas",e:"🍍"},{n:"Kiwis",e:"🥝"},{n:"Cerises",e:"🍒"},{n:"Myrtilles",e:"🫐"},{n:"Framboises",e:"🍓"},{n:"Melon",e:"🍈"},{n:"Pastèque",e:"🍉"},{n:"Abricots",e:"🍑"},{n:"Prunes",e:"🍑"},{n:"Noix",e:"🌰"},{n:"Amandes",e:"🌰"},{n:"Clémentines",e:"🍊"},{n:"Citron vert",e:"🍋"}],
+  "🥦 Légumes": [
+    {n:"Poireaux",e:"🧅"},{n:"Carottes",e:"🥕"},{n:"Pommes de terre",e:"🥔"},{n:"Tomates",e:"🍅"},
+    {n:"Courgettes",e:"🥒"},{n:"Brocolis",e:"🥦"},{n:"Épinards",e:"🌿"},{n:"Salade",e:"🥬"},
+    {n:"Oignons",e:"🧅"},{n:"Ail",e:"🧄"},{n:"Champignons",e:"🍄"},{n:"Poivrons",e:"🫑"},
+    {n:"Aubergines",e:"🍆"},{n:"Concombre",e:"🥒"},{n:"Céleri",e:"🌿"},{n:"Fenouil",e:"🌿"},
+    {n:"Haricots verts",e:"🫘"},{n:"Petits pois",e:"🫛"},{n:"Maïs",e:"🌽"},{n:"Asperges",e:"🌿"},
+    {n:"Betterave",e:"🟣"},{n:"Chou-fleur",e:"🥦"},{n:"Chou",e:"🥬"},{n:"Potiron",e:"🎃"},
+    {n:"Patate douce",e:"🍠"},{n:"Endives",e:"🥬"},{n:"Avocats",e:"🥑"},{n:"Herbes fraîches",e:"🌿"}
+  ],
+  "🍎 Fruits": [
+    {n:"Pommes",e:"🍎"},{n:"Bananes",e:"🍌"},{n:"Oranges",e:"🍊"},{n:"Citrons",e:"🍋"},
+    {n:"Fraises",e:"🍓"},{n:"Raisins",e:"🍇"},{n:"Poires",e:"🍐"},{n:"Pêches",e:"🍑"},
+    {n:"Mangues",e:"🥭"},{n:"Ananas",e:"🍍"},{n:"Kiwis",e:"🥝"},{n:"Cerises",e:"🍒"},
+    {n:"Myrtilles",e:"🫐"},{n:"Framboises",e:"🍓"},{n:"Melon",e:"🍈"},{n:"Pastèque",e:"🍉"},
+    {n:"Abricots",e:"🍑"},{n:"Prunes",e:"🍑"},{n:"Noix",e:"🌰"},{n:"Amandes",e:"🌰"},
+    {n:"Clémentines",e:"🍊"},{n:"Citron vert",e:"🍋"},
+    {n:"Pamplemousses",e:"🍊"},{n:"Grenades",e:"🍎"},{n:"Figues",e:"🟣"},
+    {n:"Panier de fruits",e:"🍇"}
+  ],
   "🥩 Viande & Volaille": [{n:"Steaks hachés",e:"🥩"},{n:"Poulet entier",e:"🍗"},{n:"Escalopes de poulet",e:"🍗"},{n:"Cordons bleus",e:"🐓"},{n:"Cuisses de poulet",e:"🍗"},{n:"Filet de bœuf",e:"🥩"},{n:"Côtelettes d'agneau",e:"🐑"},{n:"Rôti de porc",e:"🐷"},{n:"Lardons",e:"🥓"},{n:"Jambon blanc",e:"🥩"},{n:"Saucisses",e:"🌭"},{n:"Merguez",e:"🌶️"},{n:"Chipolatas",e:"🌭"},{n:"Bacon",e:"🥓"},{n:"Veau",e:"🐮"},{n:"Canard",e:"🦆"},{n:"Dinde",e:"🦃"},{n:"Rôti de bœuf",e:"🥩"},{n:"Entrecôte",e:"🥩"},{n:"Pâté",e:"🫙"}],
   "🐟 Poisson & Fruits de mer": [{n:"Saumon",e:"🐟"},{n:"Thon",e:"🐠"},{n:"Cabillaud",e:"🐡"},{n:"Daurade",e:"🐟"},{n:"Crevettes",e:"🦐"},{n:"Moules",e:"🦪"},{n:"Coquilles St-Jacques",e:"🦪"},{n:"Lieu noir",e:"🐟"},{n:"Truite",e:"🐡"},{n:"Sardines",e:"🐟"},{n:"Anchois",e:"🐟"},{n:"Poulpe",e:"🐙"},{n:"Calamars",e:"🦑"},{n:"Huîtres",e:"🦪"},{n:"Langoustines",e:"🦐"},{n:"Crabe",e:"🦀"}],
   "🥐 Boulangerie": [{n:"Pain de mie",e:"🍞"},{n:"Baguette",e:"🥖"},{n:"Croissants",e:"🥐"},{n:"Pains au chocolat",e:"🍫"},{n:"Brioche",e:"🍞"},{n:"Pain de campagne",e:"🫓"},{n:"Pains aux raisins",e:"🥐"},{n:"Ficelle",e:"🥖"},{n:"Muffins",e:"🧁"},{n:"Pains pita",e:"🫓"},{n:"Tortillas",e:"🫓"},{n:"Biscottes",e:"🍞"}],
-  "🧀 Crémerie & Œufs": [{n:"Gruyère",e:"🧀"},{n:"Beurre",e:"🧈"},{n:"Œufs",e:"🥚"},{n:"Lait",e:"🥛"},{n:"Crème fraîche",e:"🍶"},{n:"Yaourts nature",e:"🫙"},{n:"Emmental",e:"🧀"},{n:"Comté",e:"🧀"},{n:"Camembert",e:"🧀"},{n:"Mozzarella",e:"🧀"},{n:"Parmesan",e:"🧀"},{n:"Fromage blanc",e:"🫙"},{n:"Ricotta",e:"🫙"},{n:"Feta",e:"🧀"},{n:"Roquefort",e:"🧀"},{n:"Brie",e:"🧀"},{n:"Reblochon",e:"🧀"},{n:"Chèvre",e:"🐐"},{n:"Mascarpone",e:"🫙"},{n:"Lait d'avoine",e:"🌾"},{n:"Crème liquide",e:"🍶"},{n:"Faisselle",e:"🫙"}],
-  "🫙 Épicerie salée": [{n:"Pâtes",e:"🍝"},{n:"Riz",e:"🍚"},{n:"Lentilles",e:"🫘"},{n:"Pois chiches",e:"🫘"},{n:"Farine",e:"🌾"},{n:"Sel",e:"🧂"},{n:"Poivre",e:"🌶️"},{n:"Huile d'olive",e:"🫒"},{n:"Huile de tournesol",e:"🌻"},{n:"Vinaigre",e:"🫙"},{n:"Moutarde",e:"🫙"},{n:"Ketchup",e:"🍅"},{n:"Mayonnaise",e:"🫙"},{n:"Sauce soja",e:"🍶"},{n:"Bouillon cube",e:"🟨"},{n:"Thon en boîte",e:"🐟"},{n:"Tomates pelées",e:"🍅"},{n:"Concentré de tomate",e:"🍅"},{n:"Haricots blancs",e:"🫘"},{n:"Cornichons",e:"🥒"},{n:"Olives",e:"🫒"},{n:"Curry",e:"🟡"},{n:"Paprika",e:"🔴"},{n:"Cumin",e:"🟤"},{n:"Herbes de Provence",e:"🌿"},{n:"Tabasco",e:"🌶️"},{n:"Semoule",e:"🌾"},{n:"Quinoa",e:"🌾"},{n:"Lasagnes",e:"🍝"},{n:"Tagliatelles",e:"🍝"},{n:"Nouilles chinoises",e:"🍜"}],
-  "🍫 Épicerie sucrée": [{n:"Sucre",e:"🍬"},{n:"Chocolat noir",e:"🍫"},{n:"Chocolat au lait",e:"🍫"},{n:"Nutella",e:"🫙"},{n:"Confiture fraise",e:"🍓"},{n:"Confiture abricot",e:"🍑"},{n:"Miel",e:"🍯"},{n:"Sirop d'érable",e:"🍁"},{n:"Vanille",e:"🌿"},{n:"Levure chimique",e:"🧁"},{n:"Cacao",e:"🍫"},{n:"Céréales",e:"🌾"},{n:"Granola",e:"🥣"},{n:"Flocons d'avoine",e:"🌾"},{n:"Biscuits",e:"🍪"},{n:"Chips",e:"🥔"},{n:"Bonbons",e:"🍬"},{n:"Compote",e:"🍎"},{n:"Crèmes dessert",e:"🍮"}],
+  "🧀 Crémerie & Œufs": [
+    {n:"Gruyère",e:"🧀"},{n:"Beurre",e:"🧈"},{n:"Œufs",e:"🥚"},{n:"Lait",e:"🥛"},
+    {n:"Crème fraîche",e:"🍶"},{n:"Yaourts nature",e:"🫙"},{n:"Emmental",e:"🧀"},
+    {n:"Comté",e:"🧀"},{n:"Camembert",e:"🧀"},{n:"Mozzarella",e:"🧀"},{n:"Parmesan",e:"🧀"},
+    {n:"Fromage blanc",e:"🫙"},{n:"Ricotta",e:"🫙"},{n:"Feta",e:"🧀"},{n:"Roquefort",e:"🧀"},
+    {n:"Brie",e:"🧀"},{n:"Reblochon",e:"🧀"},{n:"Chèvre",e:"🐐"},{n:"Mascarpone",e:"🫙"},
+    {n:"Lait d'avoine",e:"🌾"},{n:"Crème liquide",e:"🍶"},{n:"Faisselle",e:"🫙"},
+    {n:"Yaourt grec",e:"🍨"},{n:"Kéfir",e:"🥛"}
+  ],
+  "🫙 Épicerie salée": [
+    {n:"Pâtes",e:"🍝"},{n:"Riz",e:"🍚"},{n:"Lentilles",e:"🫘"},{n:"Pois chiches",e:"🫘"},
+    {n:"Farine",e:"🌾"},{n:"Sel",e:"🧂"},{n:"Poivre",e:"🌶️"},{n:"Huile d'olive",e:"🫒"},
+    {n:"Huile de tournesol",e:"🌻"},{n:"Vinaigre",e:"🫙"},{n:"Moutarde",e:"🫙"},
+    {n:"Ketchup",e:"🍅"},{n:"Mayonnaise",e:"🫙"},{n:"Sauce soja",e:"🍶"},
+    {n:"Bouillon cube",e:"🟨"},{n:"Thon en boîte",e:"🐟"},{n:"Tomates pelées",e:"🍅"},
+    {n:"Concentré de tomate",e:"🍅"},{n:"Haricots blancs",e:"🫘"},{n:"Cornichons",e:"🥒"},
+    {n:"Olives",e:"🫒"},{n:"Curry",e:"🟡"},{n:"Paprika",e:"🔴"},{n:"Cumin",e:"🟤"},
+    {n:"Herbes de Provence",e:"🌿"},{n:"Tabasco",e:"🌶️"},{n:"Semoule",e:"🌾"},
+    {n:"Quinoa",e:"🌾"},{n:"Lasagnes",e:"🍝"},{n:"Tagliatelles",e:"🍝"},
+    {n:"Nouilles chinoises",e:"🍜"},{n:"Riz basmati",e:"🍚"},{n:"Riz complet",e:"🍚"},
+    {n:"Haricots rouges",e:"🥫"},{n:"Tortillas de blé",e:"🌮"}
+  ],
+  "🍫 Épicerie sucrée": [
+    {n:"Sucre",e:"🍬"},{n:"Chocolat noir",e:"🍫"},{n:"Chocolat au lait",e:"🍫"},{n:"Nutella",e:"🫙"},
+    {n:"Confiture fraise",e:"🍓"},{n:"Confiture abricot",e:"🍑"},{n:"Miel",e:"🍯"},{n:"Sirop d'érable",e:"🍁"},
+    {n:"Vanille",e:"🌿"},{n:"Levure chimique",e:"🧁"},{n:"Cacao",e:"🍫"},{n:"Céréales",e:"🌾"},
+    {n:"Granola",e:"🥣"},{n:"Flocons d'avoine",e:"🌾"},{n:"Biscuits",e:"🍪"},{n:"Chips",e:"🥔"},
+    {n:"Bonbons",e:"🍬"},{n:"Compote",e:"🍎"},{n:"Crèmes dessert",e:"🍮"},
+    {n:"Brownies",e:"🍫"},{n:"Gaufres",e:"🧇"},{n:"Crêpes sucrées",e:"🥞"},{n:"Glace",e:"🍨"}
+  ],
   "❄️ Surgelés": [{n:"Petits pois surgelés",e:"🫛"},{n:"Épinards surgelés",e:"🌿"},{n:"Frites",e:"🍟"},{n:"Poisson pané",e:"🐟"},{n:"Pizza surgelée",e:"🍕"},{n:"Glaces",e:"🍦"},{n:"Fruits rouges surgelés",e:"🍓"},{n:"Wok de légumes",e:"🥦"},{n:"Nuggets",e:"🍗"},{n:"Crêpes",e:"🥞"},{n:"Crevettes surgelées",e:"🦐"},{n:"Tarte surgelée",e:"🥧"}],
-  "🧴 Hygiène & Beauté": [{n:"Shampooing",e:"🧴"},{n:"Après-shampooing",e:"🧴"},{n:"Gel douche",e:"🚿"},{n:"Savon",e:"🧼"},{n:"Dentifrice",e:"🦷"},{n:"Brosse à dents",e:"🪥"},{n:"Déodorant",e:"💨"},{n:"Rasoirs",e:"🪒"},{n:"Coton",e:"🌸"},{n:"Crème hydratante",e:"🧴"},{n:"Papier toilette",e:"🧻"},{n:"Mouchoirs",e:"🤧"},{n:"Lingettes",e:"🧻"}],
-  "🍷 Boissons": [{n:"Eau minérale",e:"💧"},{n:"Eau gazeuse",e:"🫧"},{n:"Jus d'orange",e:"🍊"},{n:"Jus de pomme",e:"🍎"},{n:"Coca-Cola",e:"🥤"},{n:"Limonade",e:"🍋"},{n:"Bière",e:"🍺"},{n:"Vin rouge",e:"🍷"},{n:"Vin blanc",e:"🥂"},{n:"Rosé",e:"🌸"},{n:"Champagne",e:"🍾"},{n:"Café",e:"☕"},{n:"Thé",e:"🍵"},{n:"Tisane",e:"🌿"},{n:"Lait",e:"🥛"},{n:"Sirop",e:"🫙"},{n:"Smoothie",e:"🥤"},{n:"Red Bull",e:"⚡"},{n:"Jus de raisin",e:"🍇"}],
-  "🧹 Entretien": [{n:"Liquide vaisselle",e:"🧴"},{n:"Lessive",e:"👕"},{n:"Adoucissant",e:"🌸"},{n:"Nettoyant sol",e:"🧹"},{n:"Nettoyant multi-surfaces",e:"🧽"},{n:"Éponges",e:"🧽"},{n:"Sacs poubelle",e:"🗑️"},{n:"Papier alu",e:"🪙"},{n:"Film plastique",e:"🌀"},{n:"Liquide WC",e:"🚽"},{n:"Désinfectant",e:"🫧"},{n:"Pastilles lave-vaisselle",e:"✨"},{n:"Rouleau papier essuie-tout",e:"🧻"},{n:"Sacs congélation",e:"🧊"}],
-  "💊 Santé": [{n:"Paracétamol",e:"💊"},{n:"Ibuprofène",e:"💊"},{n:"Vitamine C",e:"🍊"},{n:"Pansements",e:"🩹"},{n:"Gel antiseptique",e:"🫙"},{n:"Thermomètre",e:"🌡️"}],
+  "🧴 Hygiène & Beauté": [
+    {n:"Shampooing",e:"🧴"},{n:"Après-shampooing",e:"🧴"},{n:"Gel douche",e:"🚿"},{n:"Savon",e:"🧼"},
+    {n:"Dentifrice",e:"🦷"},{n:"Brosse à dents",e:"🪥"},{n:"Déodorant",e:"💨"},{n:"Rasoirs",e:"🪒"},
+    {n:"Lames de rasoir",e:"🪒"},{n:"Coton",e:"🌸"},{n:"Crème hydratante",e:"🧴"},
+    {n:"Papier toilette",e:"🚽"},{n:"Mouchoirs",e:"🤧"},{n:"Lingettes",e:"🧻"}
+  ],
+  "🍷 Boissons": [
+    {n:"Eau minérale",e:"💧"},{n:"Eau gazeuse",e:"🫧"},{n:"Jus d'orange",e:"🍊"},{n:"Jus de pomme",e:"🍎"},
+    {n:"Coca-Cola",e:"🥤"},{n:"Limonade",e:"🍋"},{n:"Bière",e:"🍺"},{n:"Vin rouge",e:"🍷"},
+    {n:"Vin blanc",e:"🥂"},{n:"Rosé",e:"🌸"},{n:"Champagne",e:"🍾"},{n:"Café",e:"☕"},
+    {n:"Thé",e:"🍵"},{n:"Tisane",e:"🌿"},{n:"Lait",e:"🥛"},{n:"Sirop",e:"🫙"},
+    {n:"Smoothie",e:"🥤"},{n:"Red Bull",e:"⚡"},{n:"Jus de raisin",e:"🍇"},
+    {n:"Eau aromatisée",e:"🥤"},{n:"Thé glacé",e:"🧊"},{n:"Kombucha",e:"🧪"}
+  ],
+  "🧹 Entretien": [
+    {n:"Liquide vaisselle",e:"🧴"},{n:"Lessive",e:"👕"},{n:"Adoucissant",e:"🌸"},{n:"Nettoyant sol",e:"🧹"},
+    {n:"Nettoyant multi-surfaces",e:"🧽"},{n:"Éponges",e:"🧽"},{n:"Sacs poubelle",e:"🗑️"},
+    {n:"Papier alu",e:"🪙"},{n:"Film plastique",e:"🌀"},{n:"Liquide WC",e:"🚽"},{n:"Désinfectant",e:"🫧"},
+    {n:"Pastilles lave-vaisselle",e:"✨"},{n:"Rouleau papier essuie-tout",e:"🧻"},{n:"Sacs congélation",e:"🧊"},
+    {n:"Éponge magique",e:"🧽"},{n:"Lingettes dépoussiérantes",e:"🧻"}
+  ],
+  "💊 Santé": [
+    {n:"Paracétamol",e:"💊"},{n:"Ibuprofène",e:"💊"},{n:"Vitamine C",e:"🍊"},
+    {n:"Pansements",e:"🩹"},{n:"Gel antiseptique",e:"🫙"},{n:"Thermomètre",e:"🌡️"}
+  ],
+  "🌿 Autre": [
+    {n:"M2R",e:"📝"},
+    {n:"Crayon rouge",e:"🖍"},
+    {n:"Crayon bleu",e:"✏️"},
+    {n:"Stylo bleu",e:"🖊"},
+    {n:"Cahier",e:"📓"},
+    {n:"Carnet",e:"📔"},
+    {n:"Bloc-notes",e:"🗒"},
+    {n:"Feutres",e:"🖍"},
+    {n:"Crayons de couleur",e:"🖍"},
+    {n:"Marqueurs",e:"🖊"},
+    {n:"Post-it",e:"📒"}
+  ],
 };
 
 const ALL_PRESETS = Object.entries(PRESETS).flatMap(([cat, items]) => items.map(p => ({ ...p, cat })));
@@ -282,7 +360,7 @@ export default function App() {
                   {u}
                 </button>
               ))}
-              {/* Icône grammes */}
+              {/* Bouton grammes */}
               <button
                 className="ubtn"
                 onClick={() => {
@@ -297,12 +375,9 @@ export default function App() {
                   fontSize: ".75rem",
                   fontWeight: itemUnit === "g" ? 700 : 400,
                   flex: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: ".15rem",
                 }}
               >
-                <span style={{ fontSize: ".9rem" }}>⚖️</span> g
+                g
               </button>
               {/* Raccourcis pour les grammes */}
               {itemUnit === "g" && (
