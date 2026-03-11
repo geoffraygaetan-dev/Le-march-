@@ -421,7 +421,7 @@ export default function App() {
 function ItemRow({ item, storeId, storeColor, onToggle, onDelete }) {
   const done = !!(item.done||{})[storeId];
   return (
-    <div className="row" style={{display:"flex",alignItems:"center",gap:".65rem",background:done?"transparent":"white",borderRadius:13,padding:".48rem .9rem",marginBottom:".16rem",boxShadow:done?"none":"0 1px 6px rgba(90,60,30,.06)",border:done?"none":"1px solid #ede0ce",opacity:done?.45:1,transition:"all .2s"}}>
+    <div className="row" style={{display:"flex",alignItems:"center",gap:".65rem",background:done?"transparent":"white",borderRadius:13,padding:".32rem .75rem",marginBottom:".12rem",boxShadow:done?"none":"0 1px 6px rgba(90,60,30,.06)",border:done?"none":"1px solid #ede0ce",opacity:done?.45:1,transition:"all .2s"}}>
       <div className="chk" onClick={() => onToggle(item.id, storeId)} style={{width:22,height:22,borderRadius:6,flexShrink:0,border:done?"none":`2px solid ${storeColor}88`,background:done?storeColor:"transparent",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:".7rem",transition:".18s"}}>{done&&<ICheck/>}</div>
       {item.emoji && item.emoji !== "🛍️" && <span style={{fontSize:"1.15rem",flexShrink:0,filter:done?"grayscale(1)":"none",transition:".2s"}}>{item.emoji}</span>}
       <span style={{flex:1,color:"#3d2b1f",fontWeight:300,textDecoration:done?"line-through":"none",fontStyle:done?"italic":"normal",fontSize:".92rem"}}>{item.text}</span>
