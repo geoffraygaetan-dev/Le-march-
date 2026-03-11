@@ -373,7 +373,7 @@ export default function App() {
               </div>
             </div>
             <div style={{background:"white",borderRadius:16,border:"1px solid #ede0ce",boxShadow:"0 3px 18px rgba(90,60,30,.08)",marginBottom:"1.2rem",overflow:"hidden"}}>
-              <textarea placeholder="Colle un lien de recette, une idée… (Entrée pour valider)" value={noteInput} onChange={e => setNoteInput(e.target.value)} onKeyDown={e => { if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();addNote();} }} rows={3} style={{border:"none",outline:"none",width:"100%",resize:"none",fontFamily:"Lato,sans-serif",fontSize:".91rem",color:"#3d2b1f",padding:"1rem 1.2rem",background:"transparent",fontWeight:300}}/>
+              <textarea placeholder="Colle un lien de recette, une idée, une liste…" value={noteInput} onChange={e => setNoteInput(e.target.value)} rows={4} style={{border:"none",outline:"none",width:"100%",resize:"none",fontFamily:"Lato,sans-serif",fontSize:".91rem",color:"#3d2b1f",padding:"1rem 1.2rem",background:"transparent",fontWeight:300,lineHeight:1.6}}/>
               <div style={{display:"flex",justifyContent:"flex-end",padding:".45rem 1rem",borderTop:"1px solid #f5ede3"}}>
                 <button onClick={addNote} style={{background:"#5f4a38",color:"white",border:"none",borderRadius:10,padding:".38rem .95rem",fontSize:".78rem",cursor:"pointer",fontFamily:"Lato",fontWeight:700}}>Ajouter</button>
               </div>
