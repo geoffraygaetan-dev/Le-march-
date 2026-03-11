@@ -140,7 +140,7 @@ export default function App() {
   const addNote = () => { if (!noteInput.trim()) return; mutate(d => ({...d, notes: [...(d.notes||[]), {id: uid(), text: noteInput.trim(), date: new Date().toLocaleDateString("fr-FR")}]})); setNoteInput(""); };
   const deleteNote = id => mutate(d => ({...d, notes: d.notes.filter(n => n.id!==id)}));
 
-  const qtyStep = (itemUnit === "kg" || itemUnit === "L") ? 0.5 : 1;
+  const qtyStep = itemUnit === "g" ? 50 : 1;
 
   return (
     <div style={{minHeight:"100vh",background:"#fdf6ec",fontFamily:"Lato,sans-serif",backgroundImage:"radial-gradient(circle at 15% 15%,#f9e8d0 0%,transparent 55%),radial-gradient(circle at 85% 85%,#e8f0e0 0%,transparent 55%)"}}>
@@ -249,24 +249,25 @@ export default function App() {
             <div style={{padding:".65rem 1.1rem .8rem",display:"flex",alignItems:"center",gap:".45rem",flexWrap:"wrap"}}>
               {/* − qty + */}
               <div style={{display:"flex",alignItems:"center",gap:".28rem",background:"#f8f2ea",borderRadius:10,padding:".22rem .38rem",flexShrink:0}}>
-                <button className="qbtn" onClick={() => setItemQty(q => Math.max(qtyStep, +(q - qtyStep).toFixed(1)))}
+                <button className="qbtn" onClick={() => setItemQty(q => Math.max(qtyStep, q - qtyStep))}
                   style={{width:28,height:28,background:"white",boxShadow:"0 1px 4px rgba(0,0,0,.1)",color:"#3d2b1f",borderRadius:7,fontSize:".85rem"}}>
                   <IMinus/>
                 </button>
                 <span style={{minWidth:26,textAlign:"center",fontWeight:700,fontSize:".95rem",color:"#3d2b1f"}}>{itemQty}</span>
-                <button className="qbtn" onClick={() => setItemQty(q => +(q + qtyStep).toFixed(1))}
+                <button className="qbtn" onClick={() => setItemQty(q => q + qtyStep)}
                   style={{width:28,height:28,background:"#3d2b1f",color:"white",boxShadow:"0 2px 6px rgba(61,43,31,.3)",borderRadius:7,fontSize:".85rem"}}>
                   <IPlus/>
                 </button>
               </div>
-              {/* Unités */}
+              {/* Unités principales */}
               {UNITS.map(u => (
                 <button
                   key={u}
                   className="ubtn"
                   onClick={() => {
                     setItemUnit(u);
-                    if (u === "kg" || u === "L") setItemQty(q => (q < 0.5 ? 0.5 : q));
+                    // Toujours des nombres entiers pour pièces, kg, L, boîtes
+                    setItemQty(q => (q < 1 ? 1 : Math.round(q)));
                   }}
                   style={{
                     background: itemUnit === u ? "#3d2b1f" : "#f5ede3",
@@ -281,10 +282,32 @@ export default function App() {
                   {u}
                 </button>
               ))}
-              {/* Grammages rapides pour les kg */}
-              {itemUnit === "kg" && (
+              {/* Icône grammes */}
+              <button
+                className="ubtn"
+                onClick={() => {
+                  setItemUnit("g");
+                  setItemQty(q => (q < 50 ? 100 : q)); // démarre à 100 g si trop bas
+                }}
+                style={{
+                  background: itemUnit === "g" ? "#3d2b1f" : "#f5ede3",
+                  color: itemUnit === "g" ? "white" : "#7a5c40",
+                  borderRadius: 20,
+                  padding: ".2rem .55rem",
+                  fontSize: ".75rem",
+                  fontWeight: itemUnit === "g" ? 700 : 400,
+                  flex: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: ".15rem",
+                }}
+              >
+                <span style={{ fontSize: ".9rem" }}>⚖️</span> g
+              </button>
+              {/* Raccourcis pour les grammes */}
+              {itemUnit === "g" && (
                 <div style={{ display: "flex", gap: ".25rem", flexWrap: "wrap" }}>
-                  {[0.1, 0.25, 0.5, 1].map(v => (
+                  {[100, 250, 500, 1000].map(v => (
                     <button
                       key={v}
                       className="ubtn"
@@ -299,7 +322,7 @@ export default function App() {
                         flex: "none",
                       }}
                     >
-                      {v >= 1 ? `${v} kg` : `${v * 1000} g`}
+                      {v === 1000 ? "1 kg" : `${v} g`}
                     </button>
                   ))}
                 </div>
