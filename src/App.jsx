@@ -57,9 +57,9 @@ export default function App() {
   const [itemCat, setItemCat]       = useState(CATS[13]);
   const [itemQty, setItemQty]       = useState(1);
   const [itemUnit, setItemUnit]     = useState(UNITS[0]);
-  const [itemStores, setItemStores] = useState({});
   const [showDrop, setShowDrop]     = useState(false);
   const [dropIdx, setDropIdx]       = useState(0);
+  const [storePicker, setStorePicker] = useState(null); // {text, emoji, cat, qty, unit}
   const inputRef = useRef(null);
   const dropRef  = useRef(null);
   const [showAddStore, setShowAddStore] = useState(false);
@@ -75,11 +75,6 @@ export default function App() {
       if (!d.notes) d.notes = [];
       if (!d.stores) d.stores = defaultData().stores;
       setData(d);
-      setItemStores(prev => {
-        const init = {};
-        d.stores.forEach((s, i) => { init[s.id] = prev[s.id] ?? (i === 0); });
-        return init;
-      });
       setSyncing(false);
     });
     return () => unsub();
@@ -113,28 +108,32 @@ export default function App() {
     setShowDrop(false); inputRef.current?.focus();
   };
 
-  const addItem = () => {
+  const openStorePicker = () => {
     const text = search.trim();
     if (!text) return;
-    const stores = Object.entries(itemStores).filter(([, v]) => v).map(([k]) => k);
-    if (!stores.length) return;
     const qtyLabel = !(itemQty === 1 && itemUnit === "pièce(s)") ? `${itemQty} ${itemUnit}` : "";
-    mutate(d => ({ ...d, items: [...(d.items||[]), { id: uid(), text, emoji: itemEmoji, qty: qtyLabel, cat: itemCat, stores, done: {} }] }));
+    setStorePicker({ text, emoji: itemEmoji, cat: itemCat, qty: qtyLabel });
+  };
+
+  const confirmAdd = (storeIds) => {
+    if (!storePicker || !storeIds.length) return;
+    mutate(d => ({ ...d, items: [...(d.items||[]), { id: uid(), text: storePicker.text, emoji: storePicker.emoji, qty: storePicker.qty, cat: storePicker.cat, stores: storeIds, done: {} }] }));
     setSearch(""); setItemEmoji("🛍️"); setItemCat(CATS[13]); setItemQty(1); setItemUnit(UNITS[0]);
-    setShowDrop(false); inputRef.current?.focus();
+    setStorePicker(null); setShowDrop(false);
+    setTimeout(() => inputRef.current?.focus(), 50);
   };
 
   const handleKey = e => {
     if (e.key === "ArrowDown") { e.preventDefault(); setDropIdx(i => Math.min(i+1, suggestions.length-1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setDropIdx(i => Math.max(i-1, 0)); }
-    else if (e.key === "Enter") { e.preventDefault(); if (showDrop && suggestions.length > 0) selectSuggestion(suggestions[dropIdx]); else addItem(); }
+    else if (e.key === "Enter") { e.preventDefault(); if (showDrop && suggestions.length > 0) selectSuggestion(suggestions[dropIdx]); else openStorePicker(); }
     else if (e.key === "Escape") setShowDrop(false);
   };
 
   const toggleDone = (id, sid) => mutate(d => ({...d, items: d.items.map(i => i.id===id ? {...i, done: {...(i.done||{}), [sid]: !(i.done||{})[sid]}} : i)}));
   const deleteItem = id => mutate(d => ({...d, items: d.items.filter(i => i.id!==id)}));
   const clearDoneForStore = sid => mutate(d => ({...d, items: d.items.filter(i => !(i.stores.includes(sid) && (i.done||{})[sid]))}));
-  const addStore = (name, icon, color) => { const id = uid(); mutate(d => ({...d, stores: [...d.stores, {id, name, icon, color}]})); setItemStores(p => ({...p, [id]: false})); setShowAddStore(false); };
+  const addStore = (name, icon, color) => { const id = uid(); mutate(d => ({...d, stores: [...d.stores, {id, name, icon, color}]})); setShowAddStore(false); };
   const updateStore = (id, patch) => mutate(d => ({...d, stores: d.stores.map(s => s.id===id ? {...s,...patch} : s)}));
   const deleteStore = id => { mutate(d => ({...d, stores: d.stores.filter(s => s.id!==id), items: d.items.map(i => ({...i, stores: i.stores.filter(s => s!==id)})).filter(i => i.stores.length>0)})); setItemStores(p => { const n={...p}; delete n[id]; return n; }); setEditingStore(null); setTab("overview"); };
   const addNote = () => { if (!noteInput.trim()) return; mutate(d => ({...d, notes: [...(d.notes||[]), {id: uid(), text: noteInput.trim(), date: new Date().toLocaleDateString("fr-FR")}]})); setNoteInput(""); };
@@ -271,27 +270,12 @@ export default function App() {
               </div>
             </div>
 
-            {/* Store + Add button */}
-            <div style={{padding:".85rem 1.2rem 1.1rem"}}>
-              <div style={{fontSize:".55rem",letterSpacing:"2.5px",textTransform:"uppercase",color:"#b8a090",marginBottom:".55rem",fontWeight:700}}>Magasin</div>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"1rem",flexWrap:"wrap"}}>
-                <div style={{display:"flex",gap:".4rem",flex:1,flexWrap:"wrap"}}>
-                  {data.stores.map(s => {
-                    const on = !!itemStores[s.id];
-                    return (
-                      <div key={s.id} className="stog" onClick={() => setItemStores(p => ({...p,[s.id]:!p[s.id]}))}
-                        style={{display:"flex",alignItems:"center",gap:".4rem",background:on?s.color+"18":"#f5ede3",border:`2px solid ${on?s.color:"#e0d0c0"}`,borderRadius:20,padding:".3rem .88rem",transition:".18s"}}>
-                        <div style={{width:14,height:14,borderRadius:4,flexShrink:0,background:on?s.color:"white",border:`2px solid ${on?s.color:"#c4ad97"}`,display:"flex",alignItems:"center",justifyContent:"center",color:"white",fontSize:".58rem",transition:".18s"}}>{on&&<ICheck/>}</div>
-                        <span style={{fontSize:".82rem",fontWeight:on?700:400,color:on?s.color:"#7a5c40",transition:".18s"}}>{s.icon} {s.name}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-                <button className="abtn" onClick={addItem} disabled={!search.trim()}
-                  style={{background:search.trim()?"linear-gradient(135deg,#2d8a4e,#1e6b3a)":"#e0d0c0",color:search.trim()?"white":"#b8a090",padding:".68rem 1.5rem",fontSize:".92rem",gap:".45rem",minWidth:115,borderRadius:14,boxShadow:search.trim()?"0 4px 14px rgba(45,138,78,.35)":"none",transition:".2s"}}>
-                  <IPlus/> Ajouter
-                </button>
-              </div>
+            {/* Add button */}
+            <div style={{padding:".75rem 1.2rem 1rem",display:"flex",justifyContent:"flex-end"}}>
+              <button className="abtn" onClick={openStorePicker} disabled={!search.trim()}
+                style={{background:search.trim()?"linear-gradient(135deg,#2d8a4e,#1e6b3a)":"#e0d0c0",color:search.trim()?"white":"#b8a090",padding:".68rem 1.6rem",fontSize:".95rem",gap:".45rem",borderRadius:14,boxShadow:search.trim()?"0 4px 14px rgba(45,138,78,.35)":"none",transition:".2s"}}>
+                <IPlus/> Ajouter
+              </button>
             </div>
           </div>
         )}
@@ -414,6 +398,36 @@ export default function App() {
 
       {showAddStore && <StoreModal title="Nouveau magasin" onSave={addStore} onClose={() => setShowAddStore(false)}/>}
       {editingStore && <StoreModal title="Modifier le magasin" initial={editingStore} onSave={(n,i,c)=>{updateStore(editingStore.id,{name:n,icon:i,color:c});setEditingStore(null);}} onDelete={()=>deleteStore(editingStore.id)} onClose={()=>setEditingStore(null)}/>}
+
+      {/* STORE PICKER POPUP */}
+      {storePicker && (
+        <div className="overlay" onClick={() => setStorePicker(null)}>
+          <div className="modal up" onClick={e => e.stopPropagation()} style={{maxWidth:340,padding:"1.6rem"}}>
+            <div style={{textAlign:"center",marginBottom:"1.2rem"}}>
+              <div style={{fontSize:"2.2rem",marginBottom:".3rem"}}>{storePicker.emoji}</div>
+              <div style={{fontFamily:"'Playfair Display',serif",fontSize:"1.1rem",fontWeight:600,color:"#3d2b1f"}}>{storePicker.text}</div>
+              {storePicker.qty && <div style={{fontSize:".78rem",color:"#b8a090",marginTop:".2rem"}}>{storePicker.qty}</div>}
+              <div style={{fontSize:".78rem",color:"#b8a090",marginTop:".5rem",fontWeight:300}}>Où voulez-vous l'acheter ?</div>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:".6rem"}}>
+              {data.stores.map(s => (
+                <button key={s.id} onClick={() => confirmAdd([s.id])}
+                  style={{background:s.color,color:"white",border:"none",borderRadius:14,padding:".85rem",fontSize:"1rem",fontWeight:700,cursor:"pointer",fontFamily:"Lato",boxShadow:`0 4px 14px ${s.color}55`,transition:".15s",display:"flex",alignItems:"center",justifyContent:"center",gap:".5rem"}}>
+                  {s.icon} {s.name}
+                </button>
+              ))}
+              {data.stores.length >= 2 && (
+                <button onClick={() => confirmAdd(data.stores.map(s => s.id))}
+                  style={{background:"#3d2b1f",color:"white",border:"none",borderRadius:14,padding:".85rem",fontSize:".95rem",fontWeight:700,cursor:"pointer",fontFamily:"Lato",boxShadow:"0 4px 14px rgba(61,43,31,.3)",display:"flex",alignItems:"center",justifyContent:"center",gap:".5rem"}}>
+                  🛒 Les deux magasins
+                </button>
+              )}
+              <button onClick={() => setStorePicker(null)} className="ghost"
+                style={{color:"#b8a090",fontSize:".85rem",marginTop:".2rem"}}>Annuler</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -421,7 +435,7 @@ export default function App() {
 function ItemRow({ item, storeId, storeColor, onToggle, onDelete }) {
   const done = !!(item.done||{})[storeId];
   return (
-    <div className="row" style={{display:"flex",alignItems:"center",gap:".65rem",background:done?"transparent":"white",borderRadius:13,padding:".32rem .75rem",marginBottom:".12rem",boxShadow:done?"none":"0 1px 6px rgba(90,60,30,.06)",border:done?"none":"1px solid #ede0ce",opacity:done?.45:1,transition:"all .2s"}}>
+    <div className="row" style={{display:"flex",alignItems:"center",gap:".65rem",background:done?"transparent":"white",borderRadius:13,padding:".22rem .75rem",marginBottom:".1rem",boxShadow:done?"none":"0 1px 6px rgba(90,60,30,.06)",border:done?"none":"1px solid #ede0ce",opacity:done?.45:1,transition:"all .2s"}}>
       <div className="chk" onClick={() => onToggle(item.id, storeId)} style={{width:22,height:22,borderRadius:6,flexShrink:0,border:done?"none":`2px solid ${storeColor}88`,background:done?storeColor:"transparent",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:".7rem",transition:".18s"}}>{done&&<ICheck/>}</div>
       {item.emoji && item.emoji !== "🛍️" && <span style={{fontSize:"1.15rem",flexShrink:0,filter:done?"grayscale(1)":"none",transition:".2s"}}>{item.emoji}</span>}
       <span style={{flex:1,color:"#3d2b1f",fontWeight:300,textDecoration:done?"line-through":"none",fontStyle:done?"italic":"normal",fontSize:".92rem"}}>{item.text}</span>
