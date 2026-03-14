@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "npm run gen-icons && vite build",
+    "preview": "vite preview",
+    "gen-icons": "node scripts/gen-icons.js",
+    "postinstall": "node scripts/gen-icons.js"
   },
   "dependencies": {
     "firebase": "^10.12.0",
@@ -14,6 +16,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
+    "pngjs": "^4.0.1",
     "vite": "^5.3.1"
   }
 }
